@@ -1,19 +1,23 @@
-// default route: /api/thoughts
+const router = require('express').Router();
+const {
+    getThoughts,
+    getSingleThought,
+    createThought,
+    editThought,
+    removeThought,
+    createReaction,
+    removeReaction,
+} = require("../../controllers/thoughtController");
 
-// GET all thoughts
+router.route("/").get(getThoughts).post(createThought);
 
-// GET single thought by _id
+router
+    .route("/:thoughtId")
+    .get(getSingleThought)
+    .put(editThought)
+    .delete(removeThought);
 
-// POST new thought - and push thought's _id to the users's thought array
-
-// PUT to update a thought by _id
-
-// DELETE a thought by _id
-
-
-
-// reaction route - /api/thoughts/:thoughtId/reactions
-
-// POST a reaction stored in a thought's reactions array
-
-// DELETE to pull and remove a reaction by reactionId
+router
+    .route("/:thoughtId/reactions")
+    .post(createReaction)
+    .delete(removeReaction);

@@ -1,4 +1,3 @@
-const { createSecureServer } = require('http2');
 const { User } = require('../models');
 
 
@@ -35,7 +34,7 @@ module.exports = {
     },
 
 // DELETE a friend from users friend list
-    removeFreidn(req, res) {
+    removeFriend(req, res) {
 
     }
 
