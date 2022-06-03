@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-const reactionSchema = require("./Reaction");
+const Reaction = require("./Reaction");
 
 const thoughtSchema = new Schema(
     {
@@ -18,7 +18,7 @@ const thoughtSchema = new Schema(
             required: true,
             // i think i need some sort of validation here? will revisit
         },
-        reactions: [{ reactionSchema }],
+        reactions: [{ Reaction }],
     },
     {
         toJSON: {
