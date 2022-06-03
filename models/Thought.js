@@ -10,7 +10,8 @@ const thoughtSchema = new Schema(
             maxLength: 280,
         },
         createdAt: {
-            type: { Date, default: Date.now },
+            type: Date,
+            default: Date.now,
             get: (v) => `${v.getMonth() + 1}-${v.getDate()}1${v.getFullYear()}`,
         },
         username: {
