@@ -28,7 +28,7 @@ async function getSingleUser(req, res) {
 async function createUser(req, res) {
     try {
         const user = await User.create(req.body);
-        res.json(user);
+        res.status(201).json(user);
         console.log("Created user", user);
     } catch (err) {
         res.status(500).json(err);
@@ -47,7 +47,7 @@ async function editUser(req, res) {
         if (!user) {
             res.status(404).json({ message: "No user with this id!" });
         }
-        res.json(user);
+        res.status(201).json(user);
         console.log("Updating User", user);
     } catch (err) {
         console.log(err);
@@ -58,18 +58,6 @@ async function editUser(req, res) {
 // DELETE to remove user by _id
 // BONUS - remove users associated thoughts when deleted
 async function deleteUser(req, res) {
-    // User.findOneAndDelete({ _id: req.params.userId })
-    //     .then((user) =>
-    //         !user
-    //             ? res.status(404).json({ message: "No user with that ID" })
-    //             : Thought.deleteMany({
-    //                   _id: { $in: user.thoughts },
-    //               })
-    //     )
-    //     .then(() =>
-    //         res.json({ message: "User and associated thoughts deleted!" })
-    //     )
-
     try {
         const user = await User.findOneAndDelete({ _id: req.params.userId });
         if (!user) {
@@ -78,6 +66,7 @@ async function deleteUser(req, res) {
         const thoughts = await Thought.deleteMany({
             _id: { $in: user.thoughts },
         });
+        res.status(201).json({message: "User deleted", user})
     } catch (err) {
         res.status(500).json(err);
     }
