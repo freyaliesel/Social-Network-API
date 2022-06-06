@@ -101,16 +101,17 @@ async function removeThought(req, res) {
 // POST a reaction stored in a thought's reactions array
 async function createReaction(req, res) {
     try {
-        const reaction = await Thought.findOneAndUpdate(
+        await Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
             { $addToSet: { reactions: req.body } },
             { runValidators: true, new: true }
-        );
-        if (!thought) {
-            res.status(404).json({ message: "No thought with this id!" });
-        }
-        console.log("Adding new reaction", reaction, thought);
-        res.status(201).json({ reaction, thought });
+        ).then((thought) => {
+            if (!thought) {
+                res.status(404).json({ message: "No thought with this id!" });
+            }
+            console.log("Adding new reaction", thought);
+            res.status(201).json(thought );
+        });
     } catch (err) {
         res.status(500).json(err);
     }
