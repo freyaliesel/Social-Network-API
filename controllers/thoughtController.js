@@ -14,10 +14,11 @@ async function getThoughts(req, res) {
 // GET single thought by _id
 async function getSingleThought(req, res) {
     try {
-        const thought = await Thought.findOne({ _id: req.params.thoughtId });
+        const thought = await Thought.findOne({ _id: req.params.thoughtId })
         if (!thought) {
             console.log("No thought found");
             res.status(404).json({ message: "No thought with that ID" });
+            return
         }
         console.log("Retrieving thought", thought);
         res.json(thought);
@@ -63,6 +64,7 @@ async function editThought(req, res) {
         );
         if (!thought) {
             res.status(404).json({ message: "No thought with this id!" });
+            return
         }
         console.log("Editing thought", thought);
         res.status(201).json(thought);
@@ -108,6 +110,7 @@ async function createReaction(req, res) {
         ).then((thought) => {
             if (!thought) {
                 res.status(404).json({ message: "No thought with this id!" });
+                return
             }
             console.log("Adding new reaction", thought);
             res.status(201).json(thought );
@@ -127,6 +130,7 @@ async function removeReaction(req, res) {
         );
         if (!thought) {
             res.status(404).json({ message: "No thought with this id!" });
+            return
         }
         res.status(201).json(thought);
     } catch (err) {

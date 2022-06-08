@@ -3,7 +3,7 @@ const { User, Thought } = require("../models");
 // GET all users
 async function getUsers(req, res) {
     try {
-        const users = await User.find();
+        const users = await User.find()
         res.json(users);
         console.log("Sending Users");
     } catch (err) {
@@ -13,9 +13,19 @@ async function getUsers(req, res) {
 // GET single user by _id, populate thought and friend data
 async function getSingleUser(req, res) {
     try {
-        const user = await User.findById(req.params.userId);
+        const user = await User.findById(req.params.userId)
+        .select('__V')
+        .populate({
+            path: 'thoughts',
+            model: 'Thought'
+        })
+        .populate({
+            path: 'friends',
+            model: 'User'
+        });
         if (!user) {
             res.status(404).json({ message: "No user with that ID" });
+            return
         }
         res.json(user);
         console.log("Sending user", user);
@@ -27,7 +37,7 @@ async function getSingleUser(req, res) {
 // POST a new user
 async function createUser(req, res) {
     try {
-        const user = await User.create(req.body);
+        const user = await User.create(req.body)
         res.status(201).json(user);
         console.log("Created user", user);
     } catch (err) {
@@ -46,6 +56,7 @@ async function editUser(req, res) {
         );
         if (!user) {
             res.status(404).json({ message: "No user with this id!" });
+            return
         }
         res.status(201).json(user);
         console.log("Updating User", user);
@@ -62,6 +73,7 @@ async function deleteUser(req, res) {
         const user = await User.findOneAndDelete({ _id: req.params.userId });
         if (!user) {
             res.status(404).json({ message: "No user with this id!" });
+            return
         }
         const thoughts = await Thought.deleteMany({
             _id: { $in: user.thoughts },
@@ -82,6 +94,7 @@ async function addFriend(req, res) {
         );
         if (!user) {
             res.status(404).json({ message: "No user with this id!" });
+            return
         }
         res.json(user);
         console.log("Adding friend", user);
@@ -101,6 +114,7 @@ async function removeFriend(req, res) {
         );
         if (!user) {
             res.status(404).json({ message: "No user with this id!" });
+            return
         }
         res.json(user);
     } catch (err) {

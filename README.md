@@ -17,7 +17,7 @@ User must have MongoDB installed to run locally. Run `npm ci` to install depende
 
 ## Usage
 
-forthcoming
+[Video Walkthrough of Endpoints](https://youtu.be/N2BDcw0Pm10)
 
 ## Contact
 
